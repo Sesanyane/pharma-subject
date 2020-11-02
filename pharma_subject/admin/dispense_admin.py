@@ -14,7 +14,7 @@ class DispenseAdmin(ModelAdminMixin, admin.ModelAdmin):
 
     fieldsets = (
         (None, {
-            'fields': ('patient',
+            'fields': ('subject_identifier',
                        'medication',
                        'dispense_type',
                        'infusion_number',
@@ -29,7 +29,7 @@ class DispenseAdmin(ModelAdminMixin, admin.ModelAdmin):
                        'prepared_datetime', ),
             }), audit_fieldset_tuple)
 
-    list_display = ('patient', 'medication', 'prepared_datetime', )
+    list_display = ('subject_identifier', 'medication', 'prepared_datetime', )
 
     search_fields = ('medication__name', )
 

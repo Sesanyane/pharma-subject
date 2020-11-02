@@ -8,15 +8,15 @@ from edc_constants.choices import GENDER
 from edc_identifier.model_mixins import UniqueSubjectIdentifierFieldMixin
 
 from .site import Site
-
+from .search_slug_model_mixin import SearchSlugModelMixin
 
 class PatientManager(models.Manager):
     def get_by_natural_key(self, subject_identifier):
         return self.get(subject_identifier=subject_identifier)
 
 
-class Patient(
-        UniqueSubjectIdentifierFieldMixin, SiteModelMixin, BaseUuidModel):
+class Patient(UniqueSubjectIdentifierFieldMixin, SiteModelMixin,
+              SearchSlugModelMixin, BaseUuidModel):
 
     initials = models.CharField(
         max_length=5,
@@ -48,14 +48,18 @@ class Patient(
 
     def __str__(self):
         return f'{self.subject_identifier}, ({self.initials}), Site {self.patient_site.site_code}'
-
+    
+    def get_search_slug_fields(self):
+        fields = super().get_search_slug_fields()
+        fields.extend(['initials', 'gender', 'patient_site'])
+        
     @property
     def born(self):
         return self.dob.strftime('%Y-%m-%d')
 
     @property
     def age(self):
-        return formatted_age(self.dob, get_utcnow().date())
+        return formatted_age(self.dob, get_utcnow())
 
     class Meta:
         app_label = 'pharma_subject'

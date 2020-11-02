@@ -2,18 +2,20 @@ from django.db import models
 from edc_base.model_mixins import BaseUuidModel
 from edc_base.sites import SiteModelMixin
 from edc_base.utils import get_utcnow
+from edc_identifier.model_mixins import NonUniqueSubjectIdentifierFieldMixin
 
-from .patient import Patient
+
+from .search_slug_model_mixin import SearchSlugModelMixin
 from .medication import Medication
 from ..choices import DISPENSE_TYPES
 from ..constants import TABLET
 
 
-class Dispense(SiteModelMixin, BaseUuidModel):
+class Dispense(NonUniqueSubjectIdentifierFieldMixin, 
+               SiteModelMixin, SearchSlugModelMixin,
+               BaseUuidModel):
 
     date_hierarchy = '-prepared_datetime'
-
-    patient = models.ForeignKey(Patient, on_delete=models.PROTECT)
 
     medication = models.ForeignKey(Medication, on_delete=models.PROTECT)
 
@@ -83,8 +85,12 @@ class Dispense(SiteModelMixin, BaseUuidModel):
     prepared_date = models.DateTimeField(default=get_utcnow, editable=False)
 
     def __str__(self):
-        return str(self.patient)
+        return f'{self.subject_identifier} , {str(self.medication)}'
+    
+    def get_search_slug_fields(self):
+        fields = super().get_search_slug_fields()
+        fields.extend(['medication', 'dispense_type'])
 
     class Meta:
         app_label = 'pharma_subject'
-        unique_together = ('patient', 'medication', 'prepared_date')
+        unique_together = ('subject_identifier', 'medication', 'prepared_date')

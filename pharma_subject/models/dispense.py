@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.deletion import PROTECT
 from edc_base.model_mixins import BaseUuidModel
 from edc_base.sites import SiteModelMixin
 from edc_base.utils import get_utcnow
@@ -94,3 +95,16 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
     class Meta:
         app_label = 'pharma_subject'
         unique_together = ('subject_identifier', 'medication', 'prepared_date')
+
+class DispenseRefill(BaseUuidModel):
+    
+    dispense = models.ForeignKey(Dispense, on_delete=PROTECT)
+    
+    refill_datetime = models.DateTimeField(default=get_utcnow)
+    
+    
+    class Meta:
+        app_label = 'pharma_subject'
+        verbose_name = 'Dispense Refill'
+        verbose_name_plural = 'Dispense Refills'
+        unique_together = ('dispense', 'refill_datetime')

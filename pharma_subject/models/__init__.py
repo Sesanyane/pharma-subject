@@ -1,4 +1,4 @@
-from .dispense import Dispense
+from .dispense import Dispense, DispenseRefill
 from .medication import Medication
 from .patient import Patient
 from .profile import Profile

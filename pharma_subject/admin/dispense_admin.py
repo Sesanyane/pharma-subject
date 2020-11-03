@@ -1,16 +1,36 @@
 from django.contrib import admin
+from edc_model_admin import TabularInlineMixin
 from edc_model_admin import audit_fieldset_tuple
 
 from ..admin_site import pharma_subject_admin
-from ..forms import DispenseForm
-from ..models import Dispense
+from ..forms import DispenseForm, DispenseRefillForm
+from ..models import Dispense, DispenseRefill
 from .modeladmin_mixins import ModelAdminMixin
+
+class DispenseRefillInlineAdmin(TabularInlineMixin, admin.TabularInline):
+
+    model = DispenseRefill
+    form = DispenseRefillForm
+    extra = 1
+
+    fieldsets = (
+        (None, {
+            'fields': [
+                'dispense',
+                'refill_datetime',
+                'user_created',
+                'user_modified',
+                'created',
+                'modified']}
+         ),)
 
 
 @admin.register(Dispense, site=pharma_subject_admin)
 class DispenseAdmin(ModelAdminMixin, admin.ModelAdmin):
 
     form = DispenseForm
+    
+    inlines = [DispenseRefillInlineAdmin, ]
 
     fieldsets = (
         (None, {
@@ -26,7 +46,7 @@ class DispenseAdmin(ModelAdminMixin, admin.ModelAdmin):
                        'concentration',
                        'duration',
                        'weight',
-                       'prepared_datetime', ),
+                       'prepared_datetime',),
             }), audit_fieldset_tuple)
 
     list_display = ('subject_identifier', 'medication', 'prepared_datetime', )

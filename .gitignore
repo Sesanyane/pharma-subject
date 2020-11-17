@@ -122,6 +122,7 @@ venv.bak/
 .project
 .pydevproject
 .settings
+*migrations
 
 # mkdocs documentation
 /site

@@ -91,17 +91,17 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
     def get_search_slug_fields(self):
         fields = super().get_search_slug_fields()
         fields.extend(['medication', 'dispense_type'])
+        return fields
 
     class Meta:
         app_label = 'pharma_subject'
         unique_together = ('subject_identifier', 'medication', 'prepared_date')
 
-class DispenseRefill(BaseUuidModel):
+class DispenseRefill(SiteModelMixin, BaseUuidModel):
     
     dispense = models.ForeignKey(Dispense, on_delete=PROTECT)
     
-    refill_datetime = models.DateTimeField(default=get_utcnow)
-    
+    refill_datetime = models.DateTimeField()
     
     class Meta:
         app_label = 'pharma_subject'

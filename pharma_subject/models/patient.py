@@ -52,6 +52,7 @@ class Patient(UniqueSubjectIdentifierFieldMixin, SiteModelMixin,
     def get_search_slug_fields(self):
         fields = super().get_search_slug_fields()
         fields.extend(['initials', 'gender', 'patient_site'])
+        return fields
         
     @property
     def born(self):

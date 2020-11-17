@@ -7,16 +7,16 @@ from ..forms import DispenseForm, DispenseRefillForm
 from ..models import Dispense, DispenseRefill
 from .modeladmin_mixins import ModelAdminMixin
 
+
 class DispenseRefillInlineAdmin(TabularInlineMixin, admin.TabularInline):
 
     model = DispenseRefill
     form = DispenseRefillForm
-    extra = 1
+    extra = 0
 
     fieldsets = (
         (None, {
             'fields': [
-                'dispense',
                 'refill_datetime',
                 'user_created',
                 'user_modified',

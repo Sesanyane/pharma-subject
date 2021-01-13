@@ -3,3 +3,5 @@ from .medication_admin import MedicationAdmin
 from .patient_admin import PatientAdmin
 from .protocol_admin import ProtocolAdmin
 from .site_admin import SiteAdmin
+from .stock_admin import StockAdmin
+from .supplier_admin import SupplierAdmin

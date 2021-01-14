@@ -88,6 +88,77 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
     def __str__(self):
         return f'{self.subject_identifier} , {str(self.medication)}'
     
+    @property
+    def prescription(self):
+        if self.dispense_type == TABLET:
+            if self.number_of_tablets > 1:
+                prescription = (
+                    '{medication} {number_of_tablets} tablets {times_per_day} times per day '
+                    '({total_number_of_tablets} tablets)'.format(
+                        medication=self.medication.name,
+                        number_of_tablets=self.number_of_tablets,
+                        times_per_day=self.times_per_day,
+                        total_number_of_tablets=self.total_number_of_tablets))
+            else:
+                prescription = (
+                    '{medication} 1 tablet {times_per_day} time per day '
+                    '({total_number_of_tablets} tablets)'.format(
+                        medication=self.medication.name,
+                        times_per_day=self.times_per_day,
+                        total_number_of_tablets=self.total_number_of_tablets))
+        if self.dispense_type == SYRUP:
+            prescription = (
+                '{medication} {dose} dose {times_per_day} times a day '
+                '({total_volume})'.format(
+                    medication=self.medication.name,
+                    dose=self.dose,
+                    times_per_day=self.times_per_day,
+                    total_volume=self.total_volume))
+        if self.dispense_type == SOLUTION:
+            prescription = (
+                '{medication} {dose} dose {times_per_day} times a day '
+                '({total_volume})'.format(
+                    medication=self.medication.name,
+                    dose=self.dose,
+                    times_per_day=self.times_per_day,
+                    total_volume=self.total_volume))
+        if self.dispense_type == IV:
+            prescription = (
+                '{medication} Intravenous {concentration} {duration} '
+                '({total_volume})'.format(
+                    medication=self.medication.name,
+                    duration=self.duration,
+                    concentration=self.concentration,
+                    times_per_day=self.times_per_day,
+                    total_volume=self.total_volume))
+        if self.dispense_type == IM:
+            prescription = (
+                '{medication} IntraMuscular {concentration} {duration} '
+                '({total_volume})'.format(
+                    medication=self.medication.name,
+                    duration=self.duration,
+                    concentration=self.concentration,
+                    times_per_day=self.times_per_day,
+                    total_volume=self.total_volume))
+        if self.dispense_type == SUPPOSITORY:
+            prescription = (
+                '{medication} {number_of_tablets} suppository {times_per_day} times per day '
+                '({total_number_of_tablets} suppository)'.format(
+                    medication=self.medication.name,
+                    number_of_tablets=self.number_of_tablets,
+                    times_per_day=self.times_per_day,
+                    total_number_of_tablets=self.total_number_of_tablets))
+        if self.dispense_type == CAPSULE:
+            prescription = (
+                '{medication} {number_of_tablets} capsules {times_per_day} times per day '
+                '({total_number_of_tablets} capsules)'.format(
+                    medication=self.medication.name,
+                    number_of_tablets=self.number_of_tablets,
+                    times_per_day=self.times_per_day,
+                    total_number_of_tablets=self.total_number_of_tablets))
+        return prescription
+
+    
     def get_search_slug_fields(self):
         fields = super().get_search_slug_fields()
         fields.extend(['medication', 'dispense_type'])

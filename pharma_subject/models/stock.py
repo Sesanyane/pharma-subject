@@ -9,6 +9,7 @@ from .supplier import Supplier
 class Stock(SiteModelMixin, BaseUuidModel):
 
     stock_id = models.CharField(
+        verbose_name='Batch ID',
         max_length=30,
         blank=False,
         null=False,
@@ -19,9 +20,6 @@ class Stock(SiteModelMixin, BaseUuidModel):
         blank=True,
         null=True,
         on_delete=models.SET_NULL)
-
-    is_deleted = models.BooleanField(
-        default=False)
 
     history = HistoricalRecords()
 

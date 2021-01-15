@@ -19,8 +19,7 @@ class SupplierAdmin(ModelAdminMixin, admin.ModelAdmin):
                        'address',
                        'email',
                        'description',
-                       'vat_num',
-                       'is_deleted'),
+                       'vat_num'),
             }), audit_fieldset_tuple)
 
     list_display = ('name', 'phone', )

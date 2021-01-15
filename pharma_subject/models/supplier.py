@@ -32,8 +32,6 @@ class Supplier(SiteModelMixin, BaseUuidModel):
         max_length=15,
         unique=True)
 
-    is_deleted = models.BooleanField(default=False)
-
     history = HistoricalRecords()
 
     def __str__(self):

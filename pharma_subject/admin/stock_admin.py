@@ -8,35 +8,35 @@ from ..forms import MedicationForm, StockForm
 from ..models import Medication, Stock
 
 
-class MedicationAdmin(TabularInlineMixin, admin.TabularInline):
-    model = Medication
-    form = MedicationForm
-    extra = 1
-
-    fieldsets = (
-        (None, {
-            'fields': (
-                'name',
-                'protocol',
-                'storage_instructions',
-                'quantity',
-            )}),
-        )
+# class MedicationAdmin(TabularInlineMixin, admin.TabularInline):
+#     model = Medication
+#     form = MedicationForm
+#     extra = 1
+#
+#     fieldsets = (
+#         (None, {
+#             'fields': (
+#                 'name',
+#                 'protocol',
+#                 'storage_instructions',
+#                 'quantity',
+#             )}),
+#         )
 
 
 @admin.register(Stock, site=pharma_subject_admin)
 class StockAdmin(ModelAdminMixin, admin.ModelAdmin):
 
     form = StockForm
-    inlines = [MedicationAdmin]
+#     inlines = [MedicationAdmin]
 
     fieldsets = (
         (None, {
-            'fields': ('name',
+            'fields': ('stock_id',
                        'supplier',
                        'is_deleted'),
             }), audit_fieldset_tuple)
 
-    list_display = ('name', 'supplier', )
+    list_display = ('stock_id', 'supplier',)
 
-    search_fields = ('name', )
+    search_fields = ('stock_id',)

@@ -15,11 +15,11 @@ class MedicationAdmin(ModelAdminMixin, admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': ('name',
-                       'quantity',
+#                        'quantity',
                        'protocol',
                        'storage_instructions'),
             }), audit_fieldset_tuple)
 
-    list_display = ('name', 'protocol', )
+    list_display = ('name', 'protocol',)
 
-    search_fields = ('name', )
+    search_fields = ('name',)

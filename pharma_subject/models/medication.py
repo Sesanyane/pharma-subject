@@ -15,19 +15,19 @@ class Medication(SiteModelMixin, BaseUuidModel):
 
     protocol = models.ForeignKey(
         Protocol,
-        on_delete=models.PROTECT, )
+        on_delete=models.PROTECT,)
 
     storage_instructions = models.TextField(
         max_length=200)
 
-    quantity = models.IntegerField(
-        default=1,
-        blank=False,
-        null=False)
+#     quantity = models.IntegerField(
+#         default=1,
+#         blank=False,
+#         null=False)
 
-    stock = models.ForeignKey(
-        Stock,
-        on_delete=models.PROTECT)
+#     stock = models.ForeignKey(
+#         Stock,
+#         on_delete=models.PROTECT)
 
     objects = models.Manager()
 

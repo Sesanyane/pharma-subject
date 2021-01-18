@@ -7,7 +7,7 @@ from edc_identifier.model_mixins import NonUniqueSubjectIdentifierFieldMixin
 
 
 from .search_slug_model_mixin import SearchSlugModelMixin
-from .medication import Medication
+from .drug import Drug
 from ..choices import DISPENSE_TYPES
 from ..constants import TABLET
 
@@ -18,7 +18,10 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
 
     date_hierarchy = '-prepared_datetime'
 
-    medication = models.ForeignKey(Medication, on_delete=models.PROTECT)
+    drug = models.ForeignKey(
+        Drug,
+        on_delete=models.PROTECT,
+        verbose_name='Medication')
 
     dispense_type = models.CharField(
         max_length=15,
@@ -161,12 +164,12 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
     
     def get_search_slug_fields(self):
         fields = super().get_search_slug_fields()
-        fields.extend(['medication', 'dispense_type'])
+        fields.extend(['drug', 'dispense_type'])
         return fields
 
     class Meta:
         app_label = 'pharma_subject'
-        unique_together = ('subject_identifier', 'medication', 'prepared_date')
+        unique_together = ('subject_identifier', 'drug', 'prepared_date')
 
 class DispenseRefill(SiteModelMixin, BaseUuidModel):
     

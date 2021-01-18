@@ -3,7 +3,7 @@ from edc_base.model_mixins import BaseUuidModel
 from edc_base.sites import SiteModelMixin
 from edc_base.model_managers import HistoricalRecords
 
-from .medication import Medication
+from .drug import Drug
 from .protocol import Protocol
 from .stock import Stock
 
@@ -11,7 +11,7 @@ from .stock import Stock
 class StockItem(SiteModelMixin, BaseUuidModel):
 
     medication = models.ForeignKey(
-        Medication,
+        Drug,
         on_delete=models.SET_NULL,
         null=True)
 

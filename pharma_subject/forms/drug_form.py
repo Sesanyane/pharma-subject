@@ -2,11 +2,11 @@ from django import forms
 from edc_form_validators.form_validator_mixin import FormValidatorMixin
 from edc_base.sites.forms import SiteModelFormMixin
 
-from ..models import Medication
+from ..models import Drug
 
 
-class MedicationForm(FormValidatorMixin, SiteModelFormMixin, forms.ModelForm):
+class DrugForm(FormValidatorMixin, SiteModelFormMixin, forms.ModelForm):
 
     class Meta:
-        model = Medication
+        model = Drug
         fields = '__all__'

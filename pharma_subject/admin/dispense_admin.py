@@ -35,7 +35,7 @@ class DispenseAdmin(ModelAdminMixin, admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': ('subject_identifier',
-                       'medication',
+                       'drug',
                        'dispense_type',
                        'infusion_number',
                        'number_of_tablets',
@@ -49,8 +49,8 @@ class DispenseAdmin(ModelAdminMixin, admin.ModelAdmin):
                        'prepared_datetime',),
             }), audit_fieldset_tuple)
 
-    list_display = ('subject_identifier', 'medication', 'prepared_datetime',)
+    list_display = ('subject_identifier', 'drug', 'prepared_datetime',)
 
-    search_fields = ('medication__name',)
+    search_fields = ('drug__name',)
 
     radio_fields = {'dispense_type': admin.VERTICAL}

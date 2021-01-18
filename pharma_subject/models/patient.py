@@ -27,11 +27,6 @@ class Patient(UniqueSubjectIdentifierFieldMixin, SiteModelMixin,
         max_length=2,
         choices=GENDER)
 
-    dob = models.DateField(
-        verbose_name='Date of birth',
-        blank=True,
-        null=True)
-
     sid = models.CharField(
         max_length=20,
         validators=[RegexValidator('[\d]+', 'Invalid format.')], )
@@ -53,14 +48,6 @@ class Patient(UniqueSubjectIdentifierFieldMixin, SiteModelMixin,
         fields = super().get_search_slug_fields()
         fields.extend(['initials', 'gender', 'patient_site'])
         return fields
-        
-    @property
-    def born(self):
-        return self.dob.strftime('%Y-%m-%d')
-
-    @property
-    def age(self):
-        return formatted_age(self.dob, get_utcnow())
 
     class Meta:
         app_label = 'pharma_subject'

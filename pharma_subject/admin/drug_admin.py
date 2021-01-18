@@ -3,14 +3,14 @@ from edc_model_admin import audit_fieldset_tuple
 
 from .modeladmin_mixins import ModelAdminMixin
 from ..admin_site import pharma_subject_admin
-from ..forms import MedicationForm
-from ..models import Medication
+from ..forms import DrugForm
+from ..models import Drug
 
 
-@admin.register(Medication, site=pharma_subject_admin)
-class MedicationAdmin(ModelAdminMixin, admin.ModelAdmin):
+@admin.register(Drug, site=pharma_subject_admin)
+class DrugAdmin(ModelAdminMixin, admin.ModelAdmin):
 
-    form = MedicationForm
+    form = DrugForm
 
     fieldsets = (
         (None, {

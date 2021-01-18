@@ -13,23 +13,29 @@ class Supplier(SiteModelMixin, BaseUuidModel):
 
     phone = models.CharField(
         max_length=12,
-        blank=False,
-        null=False,
+        blank=True,
+        null=True,
         unique=True)
 
     address = models.CharField(
         max_length=200,
-        blank=False,
-        null=False)
+        blank=True,
+        null=True)
 
     email = models.EmailField(
         max_length=254,
         unique=True)
 
-    description = models.TextField()
+    description = models.CharField(
+        verbose_name='Description',
+        max_length=250,
+        blank=True,
+        null=True)
 
     vat_num = models.CharField(
         max_length=15,
+        blank=True,
+        null=True,
         unique=True)
 
     history = HistoricalRecords()

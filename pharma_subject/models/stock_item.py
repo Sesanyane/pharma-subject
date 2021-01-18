@@ -3,16 +3,16 @@ from edc_base.model_mixins import BaseUuidModel
 from edc_base.sites import SiteModelMixin
 from edc_base.model_managers import HistoricalRecords
 
+from .medication import Medication
 from .protocol import Protocol
 from .stock import Stock
 
 
 class StockItem(SiteModelMixin, BaseUuidModel):
 
-    drug_name = models.CharField(
-        verbose_name='Drug Name',
-        max_length=200,
-        blank=True,
+    medication = models.ForeignKey(
+        Medication,
+        on_delete=models.SET_NULL,
         null=True)
 
     code = models.CharField(

@@ -15,16 +15,16 @@ class StockItemAdmin(TabularInlineMixin, admin.TabularInline):
 
     fieldsets = (
         (None, {
-            'fields': ('drug_name',
-                       'code',
+            'fields': ('medication',
                        'quantity',
                        'protocol',
+                       'code',
                        'stock'),
             }),)
 
-    list_display = ('drug_name',)
+    list_display = ('medication',)
 
-    search_fields = ('drug_name',)
+    search_fields = ('medication',)
 
 
 @admin.register(Stock, site=pharma_subject_admin)

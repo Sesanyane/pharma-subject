@@ -4,7 +4,6 @@ from edc_base.sites import SiteModelMixin
 from edc_base.model_managers import HistoricalRecords
 
 from .drug import Drug
-from .protocol import Protocol
 from .supplier import Supplier
 
 
@@ -33,11 +32,13 @@ class Stock(SiteModelMixin, BaseUuidModel):
         blank=False,
         null=False)
 
-    supplier = models.CharField(
-        verbose_name='Supplier',
-        max_length=150,
-        blank=True,
-        null=True)
+    received_date = models.DateTimeField()
+
+    supplier = models.ForeignKey(
+        Supplier,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True)
 
     history = HistoricalRecords()
 

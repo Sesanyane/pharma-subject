@@ -23,7 +23,6 @@ class StockAdmin(ModelAdminMixin, admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': ('stock_id',
-                       'expiry_date',
                        'drug',
                        'quantity',
                        'supplier',),

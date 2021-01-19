@@ -15,8 +15,8 @@ class DrugAdmin(ModelAdminMixin, admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': ('name',
-#                        'quantity',
                        'protocol',
+                       'expiry_date',
                        'storage_instructions'),
             }), audit_fieldset_tuple)
 

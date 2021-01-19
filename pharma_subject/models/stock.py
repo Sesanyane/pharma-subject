@@ -16,9 +16,6 @@ class Stock(SiteModelMixin, BaseUuidModel):
         null=False,
         unique=True)
 
-    expiry_date = models.DateField(
-        verbose_name='Expiry Date')
-
     drug = models.ForeignKey(
         Drug,
         on_delete=models.SET_NULL,

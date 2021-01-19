@@ -46,7 +46,9 @@ class DispenseAdmin(ModelAdminMixin, admin.ModelAdmin):
                        'concentration',
                        'duration',
                        'weight',
-                       'prepared_datetime',),
+                       'prepared_datetime',
+                       'step',
+                       'needle_size'),
             }), audit_fieldset_tuple)
 
     list_display = ('subject_identifier', 'medication', 'prepared_datetime',)

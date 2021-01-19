@@ -1,4 +1,5 @@
 from .dispense_form import DispenseForm, DispenseRefillForm
+from .damage_form import DamageForm
 from .drug_form import DrugForm
 from .patient_form import PatientForm
 from .profile_form import ProfileForm

@@ -1,4 +1,5 @@
 from .dispense_admin import DispenseAdmin
+from .damage_admin import DamageAdmin
 from .drug_admin import DrugAdmin
 from .patient_admin import PatientAdmin
 from .profile_admin import ProfileAdmin

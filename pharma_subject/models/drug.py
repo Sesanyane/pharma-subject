@@ -13,17 +13,17 @@ class Drug(SiteModelMixin, BaseUuidModel):
                             null=True)
 
     storage_instructions = models.TextField(
-        max_length=200)
-
-#     quantity = models.IntegerField(
-#         default=1,
-#         blank=False,
-#         null=False)
+        max_length=200,
+        blank=True,
+        null=True)
 
     protocol = models.ForeignKey(
         Protocol,
         on_delete=models.SET_NULL,
         null=True)
+
+    expiry_date = models.DateField(
+        verbose_name='Expiry Date')
 
     objects = models.Manager()
 

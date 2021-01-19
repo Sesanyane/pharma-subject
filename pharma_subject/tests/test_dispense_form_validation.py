@@ -7,7 +7,7 @@ from model_mommy import mommy
 
 from ..constants import IV
 from ..form_validations import DispenseFormValidator
-from ..models import Medication, Patient
+from ..models import Drug, Patient
 
 
 class TestDispenseFormValidation(TestCase):
@@ -20,7 +20,7 @@ class TestDispenseFormValidation(TestCase):
             gender=FEMALE,
             sid='123', )
         self.medication = mommy.make(
-            Medication)
+            Drug)
         self.options = {
             'patient': self.patient.id,
             'medication': self.medication.id,
@@ -119,16 +119,6 @@ class TestDispenseFormValidation(TestCase):
         form_validator = DispenseFormValidator(cleaned_data=self.options)
         self.assertRaises(ValidationError, form_validator.validate)
         self.assertIn('total_number_of_tablets', form_validator._errors)
-
-    def test_iv_without_concentration(self):
-        """
-        Assert raises validation error if DISPENSE TYPE:IV is chosen with
-        concentration not included
-        """
-        self.options['concentration'] = None
-        form_validator = DispenseFormValidator(cleaned_data=self.options)
-        self.assertRaises(ValidationError, form_validator.validate)
-        self.assertIn('concentration', form_validator._errors)
 
     def test_iv_with_dose(self):
         """

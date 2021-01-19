@@ -18,7 +18,7 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
 
     date_hierarchy = '-prepared_datetime'
 
-    drug = models.ForeignKey(
+    medication = models.ForeignKey(
         Drug,
         on_delete=models.PROTECT,
         verbose_name='Medication')
@@ -64,11 +64,7 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
         help_text='Only required if dispense type is SYRUP, IM, IV is chosen')
 
     concentration = models.CharField(
-        max_length=60,
-        blank=True,
-        null=True,
-        help_text=('Only required if dispense type IV, IM, CAPSULES, SOLUTION,'
-                   ' SUPPOSITORIES, TABLET is chosen'))
+        max_length=25)
 
     duration = models.CharField(
         max_length=15,
@@ -164,12 +160,12 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
     
     def get_search_slug_fields(self):
         fields = super().get_search_slug_fields()
-        fields.extend(['drug', 'dispense_type'])
+        fields.extend(['medication', 'dispense_type'])
         return fields
 
     class Meta:
         app_label = 'pharma_subject'
-        unique_together = ('subject_identifier', 'drug', 'prepared_date')
+        unique_together = ('subject_identifier', 'medication', 'prepared_date')
 
 class DispenseRefill(SiteModelMixin, BaseUuidModel):
     

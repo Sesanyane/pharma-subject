@@ -6,5 +6,4 @@ from .profile_form import ProfileForm
 from .protocol_form import ProtocolForm
 from .site_form import SiteForm
 from .stock_form import StockForm
-from .stock_item_form import StockItemForm
 from .supplier_form import SupplierForm

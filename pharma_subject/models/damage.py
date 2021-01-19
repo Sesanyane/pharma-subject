@@ -21,8 +21,7 @@ class Damage(SiteModelMixin, BaseUuidModel):
         null=True)
 
     how_many = models.IntegerField(
-        verbose_name='How Many Affected',
-        max_length=20)
+        verbose_name='How Many Affected',)
 
     comment = models.CharField(
         verbose_name='Comment',

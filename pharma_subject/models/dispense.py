@@ -12,7 +12,7 @@ from ..choices import DISPENSE_TYPES
 from ..constants import TABLET
 
 
-class Dispense(NonUniqueSubjectIdentifierFieldMixin, 
+class Dispense(NonUniqueSubjectIdentifierFieldMixin,
                SiteModelMixin, SearchSlugModelMixin,
                BaseUuidModel):
 
@@ -79,12 +79,12 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
         blank=True,
         null=True,
         help_text='Only required if IV or IM is chosen')
-    
+
     step = models.CharField(
         max_length=15,
         blank=True,
         null=True,)
-    
+
     needle_size = models.CharField(
         max_length=15,
         blank=True,
@@ -96,12 +96,11 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
 
     def __str__(self):
         return f'{self.subject_identifier} , {str(self.medication)}'
-    
+
     @property
     def bmi(self):
         return None
 
-    
     def get_search_slug_fields(self):
         fields = super().get_search_slug_fields()
         fields.extend(['medication', 'dispense_type'])
@@ -111,12 +110,13 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
         app_label = 'pharma_subject'
         unique_together = ('subject_identifier', 'medication', 'prepared_date')
 
+
 class DispenseRefill(SiteModelMixin, BaseUuidModel):
-    
+
     dispense = models.ForeignKey(Dispense, on_delete=PROTECT)
-    
+
     refill_datetime = models.DateTimeField()
-    
+
     class Meta:
         app_label = 'pharma_subject'
         verbose_name = 'Dispense Refill'

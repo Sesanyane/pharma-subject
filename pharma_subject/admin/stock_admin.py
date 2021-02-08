@@ -1,7 +1,6 @@
 from django.contrib import admin
 from edc_base.utils import get_utcnow
 from edc_model_admin import audit_fieldset_tuple
-from edc_model_admin import TabularInlineMixin
 
 from .modeladmin_mixins import ModelAdminMixin
 from ..admin_site import pharma_subject_admin
@@ -24,9 +23,13 @@ class StockAdmin(ModelAdminMixin, admin.ModelAdmin):
         (None, {
             'fields': ('stock_id',
                        'drug',
+                       'type',
                        'quantity',
+                       'volume',
                        'supplier',),
             }), audit_fieldset_tuple)
+
+    radio_fields = {'type': admin.VERTICAL}
 
     list_display = ('stock_id', 'supplier',)
 

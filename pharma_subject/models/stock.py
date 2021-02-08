@@ -5,6 +5,7 @@ from edc_base.model_managers import HistoricalRecords
 
 from .drug import Drug
 from .supplier import Supplier
+from ..choices import CONTAINER_TYPES
 
 
 class Stock(SiteModelMixin, BaseUuidModel):
@@ -21,7 +22,17 @@ class Stock(SiteModelMixin, BaseUuidModel):
         on_delete=models.SET_NULL,
         null=True)
 
-    quantity = models.IntegerField()
+    type = models.CharField(
+        verbose_name='Drug container type',
+        choices=CONTAINER_TYPES,
+        max_length=50)
+
+    volume = models.IntegerField(
+        verbose_name='Volume or number of tablets per container received')
+
+    quantity = models.IntegerField(
+        verbose_name='Total received',
+        help_text='i.e overall number of tablets, vial, packs etc.')
 
     received_by = models.CharField(
         verbose_name='Received By',

@@ -5,19 +5,18 @@ from edc_base.sites import SiteModelMixin
 from edc_base.utils import get_utcnow
 from edc_identifier.model_mixins import NonUniqueSubjectIdentifierFieldMixin
 
-
 from .search_slug_model_mixin import SearchSlugModelMixin
 from .drug import Drug
 from ..choices import DISPENSE_TYPES
 from ..constants import TABLET
 
 
-class Dispense(NonUniqueSubjectIdentifierFieldMixin, 
+class Dispense(NonUniqueSubjectIdentifierFieldMixin,
                SiteModelMixin, SearchSlugModelMixin,
                BaseUuidModel):
 
     date_hierarchy = '-prepared_datetime'
-    
+
     visit_code = models.CharField(
         max_length=5,
         blank=True,
@@ -85,7 +84,7 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
         blank=True,
         null=True,
         help_text='Only required if IV or IM is chosen')
-    
+
     bmi = models.DecimalField(
         verbose_name='BMI',
         decimal_places=1,
@@ -93,25 +92,28 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
         blank=True,
         null=True,
         help_text='Only required if IV or IM is chosen for HPTN 084')
-    
+
     step = models.CharField(
         max_length=15,
         blank=True,
         null=True,
         help_text='Only required if IV or IM is chosen for Tatelo')
-    
+
     needle_size = models.CharField(
         max_length=10,
         blank=True,
         null=True,
         help_text='Only required if IV or IM is chosen for HPTN 084')
 
-
     prepared_datetime = models.DateTimeField(default=get_utcnow)
 
     def __str__(self):
         return f'{self.subject_identifier} , {str(self.medication)}'
-    
+
+    @property
+    def bmi(self):
+        return None
+
     def get_search_slug_fields(self):
         fields = super().get_search_slug_fields()
         fields.extend(['medication', 'dispense_type'])
@@ -121,12 +123,13 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
         app_label = 'pharma_subject'
         unique_together = ('subject_identifier', 'medication', 'prepared_datetime')
 
+
 class DispenseRefill(SiteModelMixin, BaseUuidModel):
-    
+
     dispense = models.ForeignKey(Dispense, on_delete=PROTECT)
-    
+
     refill_datetime = models.DateTimeField()
-    
+
     class Meta:
         app_label = 'pharma_subject'
         verbose_name = 'Dispense Refill'

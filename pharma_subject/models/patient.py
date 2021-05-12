@@ -10,6 +10,7 @@ from edc_identifier.model_mixins import UniqueSubjectIdentifierFieldMixin
 from .site import Site
 from .search_slug_model_mixin import SearchSlugModelMixin
 
+
 class PatientManager(models.Manager):
     def get_by_natural_key(self, subject_identifier):
         return self.get(subject_identifier=subject_identifier)
@@ -27,10 +28,6 @@ class Patient(UniqueSubjectIdentifierFieldMixin, SiteModelMixin,
         max_length=2,
         choices=GENDER)
 
-    sid = models.CharField(
-        max_length=20,
-        validators=[RegexValidator('[\d]+', 'Invalid format.')], )
-
     consent_datetime = models.DateTimeField(
         default=get_utcnow,
         editable=False)
@@ -43,7 +40,7 @@ class Patient(UniqueSubjectIdentifierFieldMixin, SiteModelMixin,
 
     def __str__(self):
         return f'{self.subject_identifier}, ({self.initials}), Site {self.patient_site.site_code}'
-    
+
     def get_search_slug_fields(self):
         fields = super().get_search_slug_fields()
         fields.extend(['initials', 'gender', 'patient_site'])

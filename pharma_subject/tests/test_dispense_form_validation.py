@@ -17,8 +17,7 @@ class TestDispenseFormValidation(TestCase):
             Patient,
             subject_identifier='1234',
             initials='AD',
-            gender=FEMALE,
-            sid='123', )
+            gender=FEMALE)
         self.medication = mommy.make(
             Drug)
         self.options = {

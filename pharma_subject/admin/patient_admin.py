@@ -17,12 +17,11 @@ class PatientAdmin(ModelAdminMixin, admin.ModelAdmin):
             'fields': ('subject_identifier',
                        'initials',
                        'gender',
-                       'sid',
                        'patient_site'),
             }), audit_fieldset_tuple)
 
     radio_fields = {'gender': admin.VERTICAL}
 
-    list_display = ('subject_identifier', 'sid', 'initials', 'gender', )
+    list_display = ('subject_identifier', 'initials', 'gender',)
 
-    search_fields = ('subject_identifier', 'initials', )
+    search_fields = ('subject_identifier', 'initials',)

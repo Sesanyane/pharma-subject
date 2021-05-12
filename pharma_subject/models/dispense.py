@@ -17,6 +17,12 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
                BaseUuidModel):
 
     date_hierarchy = '-prepared_datetime'
+    
+    visit_code = models.CharField(
+        max_length=5,
+        blank=True,
+        null=True,
+        help_text='Only required if dispense type IV or IM is chosen')
 
     medication = models.ForeignKey(
         Drug,
@@ -80,27 +86,31 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
         null=True,
         help_text='Only required if IV or IM is chosen')
     
+    bmi = models.DecimalField(
+        verbose_name='BMI',
+        decimal_places=1,
+        max_digits=3,
+        blank=True,
+        null=True,
+        help_text='Only required if IV or IM is chosen for HPTN 084')
+    
     step = models.CharField(
         max_length=15,
         blank=True,
-        null=True,)
+        null=True,
+        help_text='Only required if IV or IM is chosen for Tatelo')
     
     needle_size = models.CharField(
-        max_length=15,
+        max_length=10,
         blank=True,
-        null=True,)
+        null=True,
+        help_text='Only required if IV or IM is chosen for HPTN 084')
+
 
     prepared_datetime = models.DateTimeField(default=get_utcnow)
 
-    prepared_date = models.DateTimeField(default=get_utcnow, editable=False)
-
     def __str__(self):
         return f'{self.subject_identifier} , {str(self.medication)}'
-    
-    @property
-    def bmi(self):
-        return None
-
     
     def get_search_slug_fields(self):
         fields = super().get_search_slug_fields()
@@ -109,7 +119,7 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
 
     class Meta:
         app_label = 'pharma_subject'
-        unique_together = ('subject_identifier', 'medication', 'prepared_date')
+        unique_together = ('subject_identifier', 'medication', 'prepared_datetime')
 
 class DispenseRefill(SiteModelMixin, BaseUuidModel):
     

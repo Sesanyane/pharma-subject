@@ -17,6 +17,7 @@ class PatientAdmin(ModelAdminMixin, admin.ModelAdmin):
             'fields': ('subject_identifier',
                        'initials',
                        'gender',
+                       'sid',
                        'patient_site'),
             }), audit_fieldset_tuple)
 

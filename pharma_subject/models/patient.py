@@ -18,15 +18,21 @@ class PatientManager(models.Manager):
 
 class Patient(UniqueSubjectIdentifierFieldMixin, SiteModelMixin,
               SearchSlugModelMixin, BaseUuidModel):
-
     initials = models.CharField(
         max_length=5,
-        validators=[RegexValidator(r'^[A-Z]{2,3}$', message='Use CAPS, 2-3 letters')],
+        validators=[
+            RegexValidator(r'^[A-Z]{2,3}$', message='Use CAPS, 2-3 letters')],
         help_text='Format is AA or AAA')
 
     gender = models.CharField(
         max_length=2,
         choices=GENDER)
+
+    sid = models.CharField(
+        max_length=20,
+        validators=[RegexValidator('[\d]+', 'Invalid format.')],
+        blank=True,
+        null=True)
 
     consent_datetime = models.DateTimeField(
         default=get_utcnow,

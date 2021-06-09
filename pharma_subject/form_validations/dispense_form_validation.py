@@ -78,11 +78,13 @@ class DispenseFormValidator(FormValidator):
 
     def validate_iv_n_im(self):
         responses = [IV, IM]
-        self.required_if(
-            *responses,
-            field='dispense_type',
-            field_required='duration',
-            required_msg=(f'You have selected dispense type {self.dispense_type}, '
-                          f'you should enter \'duration\''),
-            not_required_msg=(f'You have selected dispense type {self.dispense_type},'
-                              f' you should NOT enter \'duration\''))
+        fields = ['duration', 'visit_code']
+        for field in fields:
+            self.required_if(
+                *responses,
+                field='dispense_type',
+                field_required=field,
+                required_msg=(f'You have selected dispense type {self.dispense_type}, '
+                              f'you should enter \'duration\''),
+                not_required_msg=(f'You have selected dispense type {self.dispense_type},'
+                                  f' you should NOT enter \'duration\''))

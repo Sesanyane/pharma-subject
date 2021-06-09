@@ -1,5 +1,6 @@
 from django.apps import apps as django_apps
 from django.contrib import admin
+from edc_fieldsets import FieldsetsModelAdminMixin
 from edc_model_admin import TabularInlineMixin
 from edc_model_admin import audit_fieldset_tuple
 
@@ -7,10 +8,12 @@ from ..admin_site import pharma_subject_admin
 from ..forms import DispenseForm, DispenseRefillForm
 from ..models import Dispense, DispenseRefill
 from .modeladmin_mixins import ModelAdminMixin
+from edc_fieldsets.fieldlist import Fieldlist
+
+from django.core.exceptions import ObjectDoesNotExist
 
 
 class DispenseRefillInlineAdmin(TabularInlineMixin, admin.TabularInline):
-
     model = DispenseRefill
     form = DispenseRefillForm
     extra = 0
@@ -27,8 +30,8 @@ class DispenseRefillInlineAdmin(TabularInlineMixin, admin.TabularInline):
 
 
 @admin.register(Dispense, site=pharma_subject_admin)
-class DispenseAdmin(ModelAdminMixin, admin.ModelAdmin):
-
+class DispenseAdmin(ModelAdminMixin, FieldsetsModelAdminMixin,
+                    admin.ModelAdmin):
     form = DispenseForm
 
     inlines = [DispenseRefillInlineAdmin, ]
@@ -48,7 +51,7 @@ class DispenseAdmin(ModelAdminMixin, admin.ModelAdmin):
                        'weight',
                        'visit_code',
                        'prepared_datetime',),
-            }), audit_fieldset_tuple)
+        }), audit_fieldset_tuple)
 
     list_display = ('subject_identifier', 'medication', 'prepared_datetime',)
 
@@ -58,28 +61,29 @@ class DispenseAdmin(ModelAdminMixin, admin.ModelAdmin):
 
     radio_fields = {'dispense_type': admin.VERTICAL}
 
-    def get_fieldsets(self, request, obj=None):
-        fieldsets = super().get_fieldsets(request, obj)
+    conditional_fieldlists = {
+        'HPTN 084': Fieldlist(insert_fields=('bmi', 'needle_size'),
+                               remove_fields=('weight',), insert_after='duration',
+                               section=None),
+         'Tatelo': Fieldlist(insert_fields=('step',),
+                             remove_fields=('visit_code',),
+                             insert_after='duration',
+                             section=None)
+         }
 
+    def get_key(self, request, obj=None):
+        return self.get_instance(request)
+
+    def get_instance(self, request):
+        """Returns the instance that provides the key
+        for the "conditional" dictionaries.
+        """
         patient_cls = django_apps.get_model('pharma_subject.patient')
-
         if request.GET.get('subject_identifier'):
             try:
-                patient_obj = patient_cls.objects.get(subject_identifier=request.GET.get('subject_identifier'))
+                patient_obj = patient_cls.objects.get(
+                    subject_identifier=request.GET.get('subject_identifier'))
             except patient_cls.DoesNotExist:
-                pass
+                raise
             else:
-                protocol = patient_obj.patient_site.protocol.name
-
-                if protocol == 'HPTN 084':
-                    old_fields = [field for field in fieldsets[0][1]['fields']]
-                    old_fields.remove('step')
-                    old_fields.remove('weight')
-                    old_fields = old_fields + ['infusion_number', 'bmi', 'needle_size']
-                    fieldsets[0][1].update(fields=tuple(old_fields))
-                elif protocol == 'Tatelo':
-                    old_fields = [field for field in fieldsets[0][1]['fields']]
-                    old_fields.remove('visit_code')
-                    old_fields = old_fields + ['step', ]
-                    fieldsets[0][1].update(fields=tuple(old_fields))
-        return fieldsets
+                return patient_obj.patient_site.protocol.name.upper()

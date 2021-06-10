@@ -14,11 +14,11 @@ class DispenseFormValidator(FormValidator):
         self.validate_tablet_n_capsule()
         self.validate_syrup_n_solution()
         self.validate_iv_n_im()
-        
+
     def validate_times_per_day(self):
-        
-        responses = [TABLET, CAPSULE, SYRUP, SOLUTION , SUPPOSITORY]
-        
+
+        responses = [TABLET, CAPSULE, SYRUP, SOLUTION, SUPPOSITORY]
+
         self.required_if(
                 *responses,
                 field='dispense_type',
@@ -27,11 +27,11 @@ class DispenseFormValidator(FormValidator):
                               f'you should enter \'times_per_day\''),
                 not_required_msg=(f'You have selected dispense type {self.dispense_type} '
                                   'you should NOT enter \'times_per_day\''))
-        
+
     def validate_total_volume(self):
-        
-        responses = [IV, IM, SYRUP, SOLUTION ]
-        
+
+        responses = [IV, IM, SYRUP, SOLUTION]
+
         self.required_if(
                 *responses,
                 field='dispense_type',
@@ -40,7 +40,7 @@ class DispenseFormValidator(FormValidator):
                               'you should enter \'total_volume\''),
                 not_required_msg=(f'You have selected dispense type {self.dispense_type} '
                                   'you should NOT enter \'total_volume\''))
-        
+
     def validate_tablet_n_capsule(self):
         responses = [TABLET, CAPSULE, SUPPOSITORY]
         required = ['number_of_tablets', 'total_number_of_tablets', ]
@@ -53,8 +53,6 @@ class DispenseFormValidator(FormValidator):
                               f'you should enter {field}'),
                 not_required_msg=(f'You have selected dispense type {self.dispense_type} '
                                   f'you should NOT enter {field}'))
-        
-        
 
         if self.dispense_type in responses and (
             float(self.cleaned_data.get('total_number_of_tablets')) < float(

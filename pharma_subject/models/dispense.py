@@ -110,10 +110,6 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
     def __str__(self):
         return f'{self.subject_identifier} , {str(self.medication)}'
 
-    @property
-    def bmi(self):
-        return None
-
     def get_search_slug_fields(self):
         fields = super().get_search_slug_fields()
         fields.extend(['medication', 'dispense_type'])

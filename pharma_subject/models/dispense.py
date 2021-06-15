@@ -1,6 +1,8 @@
 from django.db import models
 from django.db.models.deletion import PROTECT
+from django.core.validators import RegexValidator
 from edc_base.model_mixins import BaseUuidModel
+from edc_base.model_validators.date import datetime_not_future
 from edc_base.sites import SiteModelMixin
 from edc_base.utils import get_utcnow
 from edc_identifier.model_mixins import NonUniqueSubjectIdentifierFieldMixin
@@ -38,9 +40,14 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
         null=True,
         help_text='Only required if dispense type IV or IM is chosen')
 
-    number_of_tablets = models.PositiveIntegerField(
+    number_of_tablets = models.DecimalField(
         blank=True,
         null=True,
+        max_digits=3,
+        decimal_places=1,
+        validators=[RegexValidator('^[0-9]+\.(5?0?)?$',
+                                   message=('Invalid format only allows full numbers '
+                                            'of halves(.5).'))],
         help_text=('Only required if dispense type TABLET, CAPSULES, '
                    'SUPPOSITORIES is chosen'))
 
@@ -105,7 +112,9 @@ class Dispense(NonUniqueSubjectIdentifierFieldMixin,
         null=True,
         help_text='Only required if IV or IM is chosen for HPTN 084')
 
-    prepared_datetime = models.DateTimeField(default=get_utcnow)
+    prepared_datetime = models.DateTimeField(
+        default=get_utcnow,
+        validators=[datetime_not_future])
 
     def __str__(self):
         return f'{self.subject_identifier} , {str(self.medication)}'

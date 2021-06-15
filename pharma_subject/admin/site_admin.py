@@ -15,10 +15,11 @@ class SiteAdmin(ModelAdminMixin, admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': ('protocol',
+                       'name',
                        'site_code',
-                       'telephone_number', ),
+                       'telephone_number',),
             }), audit_fieldset_tuple)
 
-    list_display = ('protocol', 'site_code', 'telephone_number', )
+    list_display = ('protocol', 'site_code', 'telephone_number',)
 
-    search_fields = ('site_code', 'telephone_number', )
+    search_fields = ('site_code', 'telephone_number',)

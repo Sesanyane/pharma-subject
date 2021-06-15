@@ -10,8 +10,6 @@ from ..models import Dispense, DispenseRefill
 from .modeladmin_mixins import ModelAdminMixin
 from edc_fieldsets.fieldlist import Fieldlist
 
-from django.core.exceptions import ObjectDoesNotExist
-
 
 class DispenseRefillInlineAdmin(TabularInlineMixin, admin.TabularInline):
     model = DispenseRefill
@@ -55,20 +53,18 @@ class DispenseAdmin(ModelAdminMixin, FieldsetsModelAdminMixin,
 
     list_display = ('subject_identifier', 'medication', 'prepared_datetime',)
 
-    readonly_fields = ('prepared_datetime',)
-
     search_fields = ('medication__name',)
 
     radio_fields = {'dispense_type': admin.VERTICAL}
 
     conditional_fieldlists = {
         'HPTN 084': Fieldlist(insert_fields=('bmi', 'needle_size'),
-                               remove_fields=('weight',), insert_after='duration',
-                               section=None),
-         'Tatelo': Fieldlist(insert_fields=('step',),
-                             remove_fields=('visit_code',),
-                             insert_after='duration',
-                             section=None)
+                              remove_fields=('weight',), insert_after='duration',
+                              section=None),
+        'Tatelo': Fieldlist(insert_fields=('step',),
+                            remove_fields=('visit_code',),
+                            insert_after='duration',
+                            section=None)
          }
 
     def get_key(self, request, obj=None):

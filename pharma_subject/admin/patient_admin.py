@@ -23,6 +23,6 @@ class PatientAdmin(ModelAdminMixin, admin.ModelAdmin):
 
     radio_fields = {'gender': admin.VERTICAL}
 
-    list_display = ('subject_identifier', 'initials', 'gender',)
+    list_display = ('subject_identifier', 'initials', 'gender')
 
     search_fields = ('subject_identifier', 'initials',)

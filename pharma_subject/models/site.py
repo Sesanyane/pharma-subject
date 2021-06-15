@@ -14,6 +14,9 @@ class Site(SiteModelMixin, BaseUuidModel):
     protocol = models.ForeignKey(
         Protocol, on_delete=models.PROTECT, related_name='sites')
 
+    name = models.CharField(
+        max_length=25)
+
     site_code = models.CharField(
         max_length=20,
         validators=[RegexValidator('[\d]+', 'Invalid format.')])

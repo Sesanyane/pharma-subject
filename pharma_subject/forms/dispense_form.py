@@ -14,8 +14,8 @@ class DispenseForm(SiteModelFormMixin, FormValidatorMixin, forms.ModelForm):
         model = Dispense
         fields = '__all__'
 
-class DispenseRefillForm(SiteModelFormMixin, FormValidatorMixin, forms.ModelForm):
 
+class DispenseRefillForm(SiteModelFormMixin, FormValidatorMixin, forms.ModelForm):
 
     class Meta:
         model = DispenseRefill

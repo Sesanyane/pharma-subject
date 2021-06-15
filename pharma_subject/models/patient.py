@@ -3,7 +3,7 @@ from django.db import models
 from edc_base.model_managers import HistoricalRecords
 from edc_base.model_mixins import BaseUuidModel
 from edc_base.sites import SiteModelMixin
-from edc_base.utils import get_utcnow, formatted_age
+from edc_base.utils import get_utcnow
 from edc_constants.choices import GENDER
 from edc_identifier.model_mixins import UniqueSubjectIdentifierFieldMixin
 
@@ -12,6 +12,7 @@ from .search_slug_model_mixin import SearchSlugModelMixin
 
 
 class PatientManager(models.Manager):
+
     def get_by_natural_key(self, subject_identifier):
         return self.get(subject_identifier=subject_identifier)
 

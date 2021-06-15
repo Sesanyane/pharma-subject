@@ -59,13 +59,14 @@ class DispenseAdmin(ModelAdminMixin, FieldsetsModelAdminMixin,
 
     conditional_fieldlists = {
         'HPTN 084': Fieldlist(insert_fields=('bmi', 'needle_size'),
-                              remove_fields=('weight',), insert_after='duration',
+                              remove_fields=('weight',),
+                              insert_after='duration',
                               section=None),
-        'Tatelo': Fieldlist(insert_fields=('step',),
+        'TATELO': Fieldlist(insert_fields=('step',),
                             remove_fields=('visit_code',),
                             insert_after='duration',
                             section=None)
-         }
+    }
 
     def get_key(self, request, obj=None):
         return self.get_instance(request)

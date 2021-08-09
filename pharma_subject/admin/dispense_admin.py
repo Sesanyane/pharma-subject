@@ -6,7 +6,7 @@ from edc_model_admin import audit_fieldset_tuple
 
 from ..admin_site import pharma_subject_admin
 from ..forms import DispenseForm, DispenseRefillForm
-from ..models import Dispense, DispenseRefill
+from ..models import Dispense, DispenseRefill, Drug
 from .modeladmin_mixins import ModelAdminMixin
 from edc_fieldsets.fieldlist import Fieldlist
 
@@ -84,3 +84,9 @@ class DispenseAdmin(ModelAdminMixin, FieldsetsModelAdminMixin,
                 raise
             else:
                 return patient_obj.patient_site.protocol.name.upper()
+
+    def render_change_form(self, request, context, *args, **kwargs):
+        context['adminform'].form.fields['medication'].queryset = \
+            Drug.objects.filter(protocol__name__iexact=self.get_instance(request))
+        return super(DispenseAdmin, self).render_change_form(
+            request, context, *args, **kwargs)
